@@ -1,42 +1,120 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo list | Ashish Kumar </title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%=title%></title>
+  <link
+      rel="stylesheet"
+      href="https://kit.fontawesome.com/4b6a76a9eb.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-  <div class="wrapper">
-    <form action="" method="post">
-    <header id="main">Todo List App</header>
-    <div class="inputField">
-      <input type="textarea" placeholder="Type your todo list">
-      <button><i class="fas fa-plus"></i></button>
+  <div id="container">
+    <div id="header">
+      <img
+            src="/images/todo1.jpg"
+            alt=""
+          />
+      <h1 id="heade">Todo List App</h1>
     </div>
-    <div class="dropdown">
-      <label for="catagory">CATAGORY</label>
-      <select name="category" id="">
-        <option value="">Select your option</option>
-        <option value="Personal">Personal</option>
-        <option value="Work">Work</option>
-        <option value="School">School</option>
-        <option value="Other">Other</option>
-      </select>
-      <input class="dates" type="date" name="dateValue" placeholder=" Due date dd/mm/yyyy" required>
-    </div>
-  </form>
-    <ul class="todoList">
-      <!-- data are comes from local storage -->
-    </ul>
-    <div class="footer">
-      <span>You have <span class="pendingTasks"></span> pending tasks</span>
-      <button>Clear All</button>
+    
+    <!-- Form fill based on requirment   -->
+    <form action="/create-list" method="POST" id="form-container">
+      <div class="input-box-1">
+        <label for="description">DESCRIPTION</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          placeholder="What do you need to do?"
+          required
+        />
+      </div>
+      <div id="category-div">
+        <div class="input-box-2">
+          <label for="category">CATEGORY</label>
+          <select name="category" id="category">
+            <option value="" disabled selected>Choose a category</option>
+            <option value="PERSONAL">PERSONAL</option>
+            <option value="WORK">WORK</option>
+            <option value="SCHOOL">SCHOOL</option>
+            <option value="CLEANING">CLEANING</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
+        <div class="input-box-2">
+          <label for="due-date">DUE DATE</label>
+          <input type="date" id="due-date" name="dueDate" required />
+        </div>
+      </div>
+      <div id="button-div">
+        <!-- Add Task button -->
+        <button type="submit" id="add-task">
+          <i class="fa-sharp fa-solid fa-plus"></i>ADD TASK
+        </button>
+        <!-- Delete Task button -->
+        <button type="submit" id="delete-task">
+          <i class="fa-solid fa-trash-can"></i>DELETE TASKS
+        </button>
+      </div>
+    </form>
+     <!-- Display data on todo list-->
+     <div class="task">
+      <ul>
+        <% for(let i of todo_list){ %>
+        <li>
+          <div class="task-1">
+            <div class="check-div">
+              <input
+                type="checkbox"
+                class="delecheck"
+                name="delecheck"
+                onclick="checkedOrNot()"
+                uid=<%=
+                i._id
+                %>
+              />
+
+              <div class="desc-div">
+                <span class="dispdsc"><%=i.description%></span>
+                <div class="show-date">
+                  <i class="fa-regular fa-calendar-days"></i>
+                  <!-- Find the appropiate Date,Month,Year from i._dueDate-->
+                  <% var date = new Date(i.dueDate)%> <% var d =
+                  date.getDate()%> <% var month = date.getMonth()+1 %> <% var
+                  year = date.getFullYear() %> <%var m = parseInt(month)%>
+                  <!-- Create arr for mapping the Month name with Month number-->
+                  <%var arr =
+                  ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]%>
+
+                  <span class="dueDt"
+                    ><%= arr[m-1]%> <%= d %>,<%= year %></span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="ctg"><%=i.category%></div>
+          </div>
+        </li>
+        <%}%>
+      </ul>
     </div>
   </div>
-
+  <script
+      src="https://kit.fontawesome.com/4b6a76a9eb.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--Adding jquery to run the Ajax-->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <!--Add sweetalert to show the beautiful alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="/js/script.js"></script>
-
 </body>
 </html>
